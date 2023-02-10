@@ -9,11 +9,8 @@ const galleryBox = document.querySelector('.gallery');
 	// додає розмітку галереї в контейнер
 galleryBox.insertAdjacentHTML('beforeend', createImgGalleryMarkup(galleryItems));
 
-galleryBox.addEventListener('click', (event) => { 
-		//зображення обгорнуте посиланням, по кліку за замовчуванням користувач буде перенаправлений на іншу сторінку
-		// preventDefault забороняє цю поведінку за замовчуванням.
-	event.preventDefault();
-})
+	//Реалізація делегування на div.gallery
+galleryBox.addEventListener('click', onImgGalleryItemClick);
 
 	// створює розмітку галереї за шаблоном з об'єкта galleryItems
 function createImgGalleryMarkup(images) { 
@@ -32,3 +29,25 @@ function createImgGalleryMarkup(images) {
 
 }
 
+function onImgGalleryItemClick(event) {
+	// якщо клік не по картинці - вихід з функції
+	if (event.target.nodeName !== 'IMG') {
+		return;
+	}
+
+	//зображення обгорнуте посиланням, по кліку за замовчуванням користувач буде перенаправлений на іншу сторінку
+	// preventDefault забороняє цю поведінку за замовчуванням.
+	event.preventDefault();
+
+	//отримання url великого зображення
+	const urlOriginal = event.target.dataset.source;
+
+	const instance = basicLightbox.create(`
+    <img src="${urlOriginal}" width="800" height="600">
+	`,
+	)
+	
+	instance.show()
+}
+
+	
