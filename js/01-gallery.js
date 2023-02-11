@@ -12,7 +12,7 @@ galleryBox.insertAdjacentHTML('beforeend', createImgGalleryMarkup(galleryItems))
 	//Реалізація делегування на div.gallery
 galleryBox.addEventListener('click', onImgGalleryItemClick);
 
-	// створює розмітку галереї за шаблоном з об'єкта galleryItems
+	// створює розмітку галереї за шаблоном з масиву даних galleryItems
 function createImgGalleryMarkup(images) { 
 	return images.map(({ original, preview, description }) => {
 		return `<div class="gallery__item">
