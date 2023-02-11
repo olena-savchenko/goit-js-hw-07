@@ -29,25 +29,52 @@ function createImgGalleryMarkup(images) {
 
 }
 
+	// обробник події click на картинку галереї
 function onImgGalleryItemClick(event) {
-	// якщо клік не по картинці - вихід з функції
+		// якщо клік не по картинці - вихід з функції
 	if (event.target.nodeName !== 'IMG') {
 		return;
 	}
 
-	//зображення обгорнуте посиланням, по кліку за замовчуванням користувач буде перенаправлений на іншу сторінку
-	// preventDefault забороняє цю поведінку за замовчуванням.
+		//зображення обгорнуте посиланням, по кліку за замовчуванням користувач буде перенаправлений на іншу сторінку
+		// preventDefault забороняє цю поведінку за замовчуванням.
 	event.preventDefault();
 
-	//отримання url великого зображення
+		//отримання url великого зображення
 	const urlOriginal = event.target.dataset.source;
 
+		//створеня екземпляра бібліотеки basicLightbox
+		// по кліку на картинку відкривається картинка оригільного розміру в окремому модальному вікні
 	const instance = basicLightbox.create(`
     <img src="${urlOriginal}" width="800" height="600">
 	`,
+	  		// об'єкт налаштувань basicLightbox
+		{	
+				// функція, яка виконується перед відображенням Ligtnbox
+			onShow: (instance) => { 
+					// 
+				document.addEventListener('keydown', onEscapeKeydown);
+			},
+
+				// функція, яка виконується перед закриттям Ligtnbox
+			onClose: (instance) => {
+				// знімаємо прослуховування клавіатури, перед закриттям  модального вікна
+				document.removeEventListener('keydown', onEscapeKeydown);
+			}
+
+		}
 	)
 	
-	instance.show()
-}
+	instance.show();
 
 	
+	function onEscapeKeydown(event) {
+		console.log(event.code);
+		if (event.code === 'Escape') {
+
+				// close() - метод бібліотеки basicLightbox, закриває модальне вікно	
+			instance.close();
+		}	
+	}
+}
+
